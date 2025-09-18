@@ -1,0 +1,12 @@
+.navbar {
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+#username {
+  color: rgba(255, 255, 255, 0.8);
+}
