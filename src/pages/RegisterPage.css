@@ -1,0 +1,34 @@
+.back-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-rules {
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+/* Améliore le style de react-phone-number-input */
+.PhoneInputInput {
+  border-radius: 0 10px 10px 0 !important;
+  padding: 0.75rem 1rem !important;
+  border: 1px solid #ced4da;
+  border-left: none;
+}
+
+.PhoneInputCountry {
+  border-radius: 10px 0 0 10px;
+  border: 1px solid #ced4da;
+  border-right: none;
+  background-color: #e9ecef;
+}

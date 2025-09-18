@@ -1,13 +1,31 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import { useGetServicesQuery } from '../api/servicesApiSlice';
+import ServiceCard from '../components/ServiceCard';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 const FeedPage = () => {
+  const { data: services, isLoading, error } = useGetServicesQuery();
+
   return (
-    <Container>
-      <h1>Fil d'actualité des services</h1>
-      <p>C'est ici que les services proposés par les prestataires apparaîtront.</p>
-      {/* On ajoutera la liste des services ici dans une prochaine mission */}
-    </Container>
+    <>
+      <h1>Derniers Services</h1>
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant='danger'>{error?.data?.message || error.error}</Message>
+      ) : (
+        <>
+          <Row>
+            {services.map((service) => (
+              <Col key={service._id} sm={12} md={6} lg={4} xl={3}>
+                <ServiceCard service={service} />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )}
+    </>
   );
 };
 

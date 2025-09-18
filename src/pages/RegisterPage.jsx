@@ -9,6 +9,7 @@ import 'react-phone-number-input/style.css';
 import { useRegisterMutation } from '../api/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import './AuthForm.css';
+import './RegisterPage.css'; // Fichier de style spécifique
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -18,6 +19,8 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,11 +34,29 @@ const RegisterPage = () => {
     }
   }, [navigate, userInfo]);
 
+  const validatePassword = (pass) => {
+    const hasMinLength = pass.length >= 9;
+    const hasUpperCase = /[A-Z]/.test(pass);
+    const hasNumber = /\d{2,}/.test(pass);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pass);
+    return { hasMinLength, hasUpperCase, hasNumber, hasSpecialChar };
+  };
+
+  const { hasMinLength, hasUpperCase, hasNumber, hasSpecialChar } = validatePassword(password);
+  const isPasswordValid = hasMinLength && hasUpperCase && hasNumber && hasSpecialChar;
+
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    if (!phone || !isValidPhoneNumber(phone)) {
+    if (!agreedToTerms) {
+      toast.error("Vous devez accepter les conditions d'utilisation.");
+      return;
+    }
+    if (!isValidPhoneNumber(phone || '')) {
       toast.error('Veuillez entrer un numéro de téléphone valide.');
+      return;
+    }
+    if (!isPasswordValid) {
+      toast.error('Votre mot de passe ne respecte pas les critères de sécurité.');
       return;
     }
     if (password !== confirmPassword) {
@@ -55,84 +76,71 @@ const RegisterPage = () => {
     <div className='auth-form-container'>
       <Card className='auth-form-card'>
         <Card.Body>
+          <Button variant='light' className='back-button' onClick={() => navigate(-1)}>
+            &larr; Retour
+          </Button>
           <h1>S'inscrire</h1>
           <Form onSubmit={submitHandler}>
             <Form.Group className='my-3' controlId='name'>
               <Form.Label>Nom</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Entrez votre nom'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <Form.Control type='text' value={name} onChange={(e) => setName(e.target.value)} required />
             </Form.Group>
 
             <Form.Group className='my-3' controlId='email'>
               <Form.Label>Email</Form.Label>
-              <Form.Control
-                type='email'
-                placeholder='Entrez votre email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              <Form.Control type='email' value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </Form.Group>
+            
+            <Form.Group className='my-3' controlId='phone'>
+              <Form.Label>Numéro de téléphone</Form.Label>
+              <PhoneInput
+                placeholder="Entrez votre numéro"
+                value={phone}
+                onChange={setPhone}
+                defaultCountry="CI"
+                international
+                withCountryCallingCode
+                searchable // Active la recherche
                 required
               />
             </Form.Group>
 
-            <Form.Group className='my-3' controlId='phone'>
-                <Form.Label>Numéro de téléphone</Form.Label>
-                <PhoneInput
-                  placeholder="Entrez votre numéro"
-                  value={phone}
-                  onChange={setPhone}
-                  defaultCountry="CI" // Côte d'Ivoire par défaut
-                  international
-                  withCountryCallingCode
-                  required
-                />
-              </Form.Group>
-
             <Form.Group className='my-3' controlId='password'>
               <Form.Label>Mot de passe</Form.Label>
               <InputGroup>
-                <Form.Control
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder='Entrez votre mot de passe'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                 <Button variant="outline-secondary" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </Button>
+                <Form.Control type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} onFocus={() => setPasswordFocus(true)} onBlur={() => setPasswordFocus(false)} required />
+                <Button variant="outline-secondary" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash /> : <FaEye />}</Button>
               </InputGroup>
+              {passwordFocus && (
+                <div className='password-rules mt-2'>
+                  <small style={{ color: hasMinLength ? 'green' : 'red' }}>✓ 9 caractères minimum</small><br/>
+                  <small style={{ color: hasUpperCase ? 'green' : 'red' }}>✓ 1 majuscule</small><br/>
+                  <small style={{ color: hasNumber ? 'green' : 'red' }}>✓ Au moins 2 chiffres</small><br/>
+                  <small style={{ color: hasSpecialChar ? 'green' : 'red' }}>✓ 1 caractère spécial (!, @, #...)</small>
+                </div>
+              )}
             </Form.Group>
 
             <Form.Group className='my-3' controlId='confirmPassword'>
               <Form.Label>Confirmer le mot de passe</Form.Label>
-               <InputGroup>
-                <Form.Control
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder='Confirmez le mot de passe'
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-                 <Button variant="outline-secondary" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                </Button>
+              <InputGroup>
+                <Form.Control type={showConfirmPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                <Button variant="outline-secondary" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? <FaEyeSlash /> : <FaEye />}</Button>
               </InputGroup>
             </Form.Group>
 
-            <Button type='submit' variant='primary' disabled={isLoading} className='mt-3 w-100'>
-              {isLoading ? "Création du compte..." : "S'inscrire"}
-            </Button>
+            <Form.Group className="my-3" controlId="termsCheckbox">
+              <Form.Check 
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                label={<span>J'accepte les <Link to="/terms" target="_blank">Conditions d'Utilisation</Link></span>}
+              />
+            </Form.Group>
 
-            <Row className='py-3'>
-              <Col className='text-center'>
-                Déjà un compte? <Link to='/login'>Se connecter</Link>
-              </Col>
-            </Row>
+            <Button type='submit' variant='primary' disabled={isLoading} className='mt-2 w-100'>
+              {isLoading ? 'Création du compte...' : "S'inscrire"}
+            </Button>
           </Form>
         </Card.Body>
       </Card>

@@ -17,6 +17,7 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import FeedPage from './pages/FeedPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import TermsPage from './pages/TermsPage.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route index={true} path='/' element={<LandingPage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
+      <Route path='/terms' element={<TermsPage />} />
 
       {/* --- Routes Privées --- */}
       <Route path='' element={<PrivateRoute />}>

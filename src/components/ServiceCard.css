@@ -1,0 +1,42 @@
+.service-card {
+  transition: all 0.3s ease-in-out;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.service-card-img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.service-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+  min-height: 48px; /* Assure que les titres ont la même hauteur */
+}
+
+.service-title strong {
+  color: inherit;
+}
+
+.service-price {
+  color: #007bff;
+  font-weight: 700;
+}
+
+.service-provider {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+a {
+  text-decoration: none;
+}
