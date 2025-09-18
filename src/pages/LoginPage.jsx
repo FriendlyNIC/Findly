@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useLoginMutation } from '../api/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
-import './AuthForm.css'; // On va créer ce fichier de style commun
+import GoBackButton from '../components/GoBackButton'; // Ajouté
+import './AuthForm.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/feed'); // Redirige si déjà connecté
+      navigate('/feed');
     }
   }, [navigate, userInfo]);
 
@@ -38,6 +39,7 @@ const LoginPage = () => {
 
   return (
     <div className='auth-form-container'>
+      <GoBackButton /> {/* Ajouté */}
       <Card className='auth-form-card'>
         <Card.Body>
           <h1>Se connecter</h1>

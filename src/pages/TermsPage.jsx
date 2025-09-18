@@ -1,14 +1,10 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
+import GoBackButton from '../components/GoBackButton'; // Ajouté
 
 const TermsPage = () => {
-  const navigate = useNavigate();
-
   return (
     <Container className='py-5'>
-      <Button className='mb-4' variant='light' onClick={() => navigate(-1)}>
-        &larr; Retour
-      </Button>
+      <GoBackButton /> {/* Modifié */}
       <Row className='justify-content-md-center'>
         <Col md={8}>
           <h1>Conditions Générales d'Utilisation</h1>
@@ -23,7 +19,6 @@ const TermsPage = () => {
           <p>
             La création d'un compte est obligatoire pour accéder à certains services. Vous êtes responsable de la confidentialité de votre mot de passe et de toutes les activités effectuées depuis votre compte.
           </p>
-          {/* ... Le reste des conditions sera ajouté plus tard ... */}
         </Col>
       </Row>
     </Container>

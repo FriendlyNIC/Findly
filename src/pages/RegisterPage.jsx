@@ -8,8 +8,9 @@ import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useRegisterMutation } from '../api/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import GoBackButton from '../components/GoBackButton'; // Ajouté
 import './AuthForm.css';
-import './RegisterPage.css'; // Fichier de style spécifique
+import './RegisterPage.css';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -74,11 +75,9 @@ const RegisterPage = () => {
 
   return (
     <div className='auth-form-container'>
+      <GoBackButton /> {/* Modifié */}
       <Card className='auth-form-card'>
         <Card.Body>
-          <Button variant='light' className='back-button' onClick={() => navigate(-1)}>
-            &larr; Retour
-          </Button>
           <h1>S'inscrire</h1>
           <Form onSubmit={submitHandler}>
             <Form.Group className='my-3' controlId='name'>
@@ -100,7 +99,6 @@ const RegisterPage = () => {
                 defaultCountry="CI"
                 international
                 withCountryCallingCode
-                searchable // Active la recherche
                 required
               />
             </Form.Group>
