@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://findly-backend.onrender.com', // L'URL de ton backend déployé
+  baseUrl: import.meta.env.VITE_BACKEND_URL, // Utilise la variable d'environnement
 });
 
 export const apiSlice = createApi({
