@@ -2,9 +2,19 @@
   padding: 1rem 0;
 }
 
+/* On s'assure que le conteneur prend toute la largeur pour bien centrer */
+.navbar .container {
+  position: relative;
+  width: 100%;
+}
+
 .navbar-brand {
   font-weight: 700;
   font-size: 1.5rem;
+  /* La magie du centrage absolu */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 #username {
