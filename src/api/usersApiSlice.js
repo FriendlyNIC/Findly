@@ -1,5 +1,6 @@
 import { apiSlice } from './apiSlice';
 const USERS_URL = '/api/auth';
+const PROFILES_URL = '/api/users'; // URL pour le profil
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -23,8 +24,27 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
       }),
     }),
+    // --- NOUVELLES FONCTIONS AJOUTÉES ---
+    getProfile: builder.query({
+      query: () => ({
+        url: `${PROFILES_URL}/profile`,
+      }),
+      providesTags: ['User'],
+    }),
+    switchRole: builder.mutation({
+      query: () => ({
+        url: `${PROFILES_URL}/switch-role`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } =
-  usersApiSlice;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useGetProfileQuery,
+  useSwitchRoleMutation,
+} = usersApiSlice;

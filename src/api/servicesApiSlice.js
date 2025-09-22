@@ -23,7 +23,7 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Service'], // Pour rafraîchir la liste des services après ajout
+      invalidatesTags: ['Service'],
     }),
   }),
 });
@@ -31,5 +31,5 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetServicesQuery,
   useGetServiceDetailsQuery,
-  useCreateServiceMutation, // --- NOUVEL EXPORT ---
+  useCreateServiceMutation,
 } = servicesApiSlice;

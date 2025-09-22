@@ -18,20 +18,22 @@ import FeedPage from './pages/FeedPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import TermsPage from './pages/TermsPage.jsx';
+import CreateServicePage from './pages/CreateServicePage.jsx'; // Ajouté
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      {/* --- Routes Publiques --- */}
+      {/* Routes Publiques */}
       <Route index={true} path='/' element={<LandingPage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/terms' element={<TermsPage />} />
 
-      {/* --- Routes Privées --- */}
+      {/* Routes Privées */}
       <Route path='' element={<PrivateRoute />}>
         <Route path='/feed' element={<FeedPage />} />
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/service/create' element={<CreateServicePage />} /> {/* Ajouté */}
       </Route>
     </Route>
   )

@@ -1,5 +1,5 @@
-import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap'; // Ajout de Button
-import { FaSignInAlt, FaSignOutAlt, FaUser, FaPlus } from 'react-icons/fa'; // Ajout de FaPlus
+import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
+import { FaSignInAlt, FaSignOutAlt, FaUser, FaPlus } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -36,11 +36,14 @@ const Header = () => {
             <Nav className='ms-auto align-items-center'>
               {userInfo ? (
                 <>
-                  <LinkContainer to='/service/create'>
-                    <Button variant='primary' className='me-3'>
-                      <FaPlus /> Proposer un service
-                    </Button>
-                  </LinkContainer>
+                  {/* --- CONDITION AJOUTÉE ICI --- */}
+                  {userInfo.role === 'Prestataire' && (
+                    <LinkContainer to='/service/create'>
+                      <Button variant='primary' className='me-3'>
+                        <FaPlus /> Proposer un service
+                      </Button>
+                    </LinkContainer>
+                  )}
                   <NavDropdown title={userInfo.name} id='username'>
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item>
