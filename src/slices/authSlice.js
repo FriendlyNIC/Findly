@@ -18,7 +18,6 @@ const authSlice = createSlice({
       state.userInfo = null;
       localStorage.removeItem('userInfo');
     },
-    // --- NOUVELLE FONCTION AJOUTÉE ---
     updateUserRole: (state, action) => {
       if (state.userInfo) {
         state.userInfo.role = action.payload.role;
