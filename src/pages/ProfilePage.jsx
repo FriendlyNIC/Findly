@@ -12,27 +12,17 @@ const ProfilePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-
   const [switchRole, { isLoading: isSwitchingRole }] = useSwitchRoleMutation();
   const [updateProfile, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
   const [loadingUpload, setLoadingUpload] = useState(false);
-
-  useEffect(() => {
-    if (userInfo) {
-      setName(userInfo.name);
-      setEmail(userInfo.email);
-      setPhone(userInfo.phone);
-    }
-  }, [userInfo]);
 
   const switchRoleHandler = async () => {
     if (window.confirm('Êtes-vous sûr de vouloir changer de rôle ? Vous ne pourrez pas le refaire avant 15 jours.')) {
       try {
         const res = await switchRole().unwrap();
         dispatch(updateUserRole({ role: res.role }));
+        // On met à jour toutes les infos au cas où
+        dispatch(setCredentials({ ...userInfo, ...res }));
         toast.success(`Vous êtes maintenant un ${res.role}.`);
       } catch (err) {
         toast.error(err?.data || err.error);
@@ -47,9 +37,7 @@ const ProfilePage = () => {
     formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     setLoadingUpload(true);
     try {
-      const config = {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      };
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       const { data } = await axios.post(
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData,
@@ -64,7 +52,6 @@ const ProfilePage = () => {
       setLoadingUpload(false);
     }
   };
-
 
   return (
     <Container className='profile-container'>
@@ -82,16 +69,14 @@ const ProfilePage = () => {
                 <Form.Label className='upload-icon'>
                   <FaCamera />
                 </Form.Label>
-                <Form.Control
-                  type='file'
-                  onChange={uploadProfileImage}
-                  hidden
-                />
+                <Form.Control type='file' onChange={uploadProfileImage} hidden />
               </Form.Group>
                {(isUpdatingProfile || loadingUpload) && <Spinner animation='border' className='profile-picture-spinner' />}
             </div>
-            <h1>{userInfo?.name}</h1>
+            {/* --- CORRECTION ICI --- */}
+            <h1>{userInfo?.name}</h1> 
             <p className='text-muted'>{userInfo?.email}</p>
+            <p className='text-muted'>{userInfo?.phone}</p>
           </div>
           
           <div className='role-management-section'>
