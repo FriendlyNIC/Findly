@@ -1,3 +1,4 @@
+/* Styles existants pour le bouton retour et le champ téléphone... */
 .back-button {
   position: absolute;
   top: 15px;
@@ -18,7 +19,6 @@
   font-size: 0.9rem;
 }
 
-/* Améliore le style de react-phone-number-input */
 .PhoneInputInput {
   border-radius: 0 10px 10px 0 !important;
   padding: 0.75rem 1rem !important;
@@ -31,4 +31,40 @@
   border: 1px solid #ced4da;
   border-right: none;
   background-color: #e9ecef;
+}
+
+/* --- NOUVEAUX STYLES POUR LE CHOIX DU RÔLE --- */
+.role-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.role-selection .form-check-input {
+  display: none; /* On cache la case à cocher ronde */
+}
+
+.role-selection .form-check-label {
+  display: block;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.role-selection .form-check-input:checked + .form-check-label {
+  border-color: #0d6efd;
+  background-color: #e7f1ff;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+.role-option {
+  display: flex;
+  flex-direction: column;
+}
+
+.role-option small {
+  font-size: 0.8rem;
+  color: #6c757d;
 }

@@ -16,7 +16,20 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    // --- MUTATION AJOUTÉE ---
+    createService: builder.mutation({
+      query: (data) => ({
+        url: SERVICES_URL,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Service'], // Pour rafraîchir la liste des services après ajout
+    }),
   }),
 });
 
-export const { useGetServicesQuery, useGetServiceDetailsQuery } = servicesApiSlice;
+export const {
+  useGetServicesQuery,
+  useGetServiceDetailsQuery,
+  useCreateServiceMutation, // --- NOUVEL EXPORT ---
+} = servicesApiSlice;

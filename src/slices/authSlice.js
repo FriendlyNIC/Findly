@@ -18,9 +18,16 @@ const authSlice = createSlice({
       state.userInfo = null;
       localStorage.removeItem('userInfo');
     },
+    // --- NOUVELLE FONCTION AJOUTÉE ---
+    updateUserRole: (state, action) => {
+      if (state.userInfo) {
+        state.userInfo.role = action.payload.role;
+        localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
+      }
+    }
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, updateUserRole } = authSlice.actions;
 
 export default authSlice.reducer;

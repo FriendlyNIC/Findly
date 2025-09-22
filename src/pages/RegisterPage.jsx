@@ -8,7 +8,7 @@ import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useRegisterMutation } from '../api/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
-import GoBackButton from '../components/GoBackButton'; // Ajouté
+import GoBackButton from '../components/GoBackButton';
 import './AuthForm.css';
 import './RegisterPage.css';
 
@@ -18,6 +18,7 @@ const RegisterPage = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('Particulier'); // Ajout de l'état pour le rôle
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -65,7 +66,7 @@ const RegisterPage = () => {
       return;
     }
     try {
-      const res = await register({ name, email, password, phone }).unwrap();
+      const res = await register({ name, email, password, phone, role }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate('/feed');
     } catch (err) {
@@ -75,11 +76,46 @@ const RegisterPage = () => {
 
   return (
     <div className='auth-form-container'>
-      <GoBackButton /> {/* Modifié */}
+      <GoBackButton />
       <Card className='auth-form-card'>
         <Card.Body>
-          <h1>S'inscrire</h1>
+          <h1>Créer un compte</h1>
           <Form onSubmit={submitHandler}>
+            {/* --- SECTION CHOIX DU RÔLE AJOUTÉE --- */}
+            <Form.Group className='my-4' controlId='role'>
+              <Form.Label>Vous êtes :</Form.Label>
+              <div className='role-selection'>
+                <Form.Check
+                  type='radio'
+                  id='role-particulier'
+                  name='role'
+                  value='Particulier'
+                  checked={role === 'Particulier'}
+                  onChange={(e) => setRole(e.target.value)}
+                  label={
+                    <div className='role-option'>
+                      <strong>Un Particulier</strong>
+                      <small>Je cherche un service</small>
+                    </div>
+                  }
+                />
+                <Form.Check
+                  type='radio'
+                  id='role-prestataire'
+                  name='role'
+                  value='Prestataire'
+                  checked={role === 'Prestataire'}
+                  onChange={(e) => setRole(e.target.value)}
+                  label={
+                    <div className='role-option'>
+                      <strong>Un Prestataire</strong>
+                      <small>Je propose un service</small>
+                    </div>
+                  }
+                />
+              </div>
+            </Form.Group>
+
             <Form.Group className='my-3' controlId='name'>
               <Form.Label>Nom</Form.Label>
               <Form.Control type='text' value={name} onChange={(e) => setName(e.target.value)} required />
@@ -89,7 +125,7 @@ const RegisterPage = () => {
               <Form.Label>Email</Form.Label>
               <Form.Control type='email' value={email} onChange={(e) => setEmail(e.target.value)} required />
             </Form.Group>
-            
+
             <Form.Group className='my-3' controlId='phone'>
               <Form.Label>Numéro de téléphone</Form.Label>
               <PhoneInput
@@ -128,7 +164,7 @@ const RegisterPage = () => {
             </Form.Group>
 
             <Form.Group className="my-3" controlId="termsCheckbox">
-              <Form.Check 
+              <Form.Check
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}

@@ -1,5 +1,5 @@
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap'; // Ajout de Button
+import { FaSignInAlt, FaSignOutAlt, FaUser, FaPlus } from 'react-icons/fa'; // Ajout de FaPlus
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -33,18 +33,25 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='ms-auto'>
+            <Nav className='ms-auto align-items-center'>
               {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username'>
-                  <LinkContainer to='/profile'>
-                    <NavDropdown.Item>
-                      <FaUser /> Profil
-                    </NavDropdown.Item>
+                <>
+                  <LinkContainer to='/service/create'>
+                    <Button variant='primary' className='me-3'>
+                      <FaPlus /> Proposer un service
+                    </Button>
                   </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    <FaSignOutAlt /> Déconnexion
-                  </NavDropdown.Item>
-                </NavDropdown>
+                  <NavDropdown title={userInfo.name} id='username'>
+                    <LinkContainer to='/profile'>
+                      <NavDropdown.Item>
+                        <FaUser /> Profil
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                      <FaSignOutAlt /> Déconnexion
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </>
               ) : (
                 <>
                   <LinkContainer to='/login'>
